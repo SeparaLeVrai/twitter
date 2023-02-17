@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TweetController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [AccueilController::class, "index"])->name('accueil');
+Route::get('/users', [UserController::class, "index"])->name('users');
+Route::get('/users/{pseudo}', [UserController::class, "show"])->name('show');
+Route::get('/add', [TweetController::class, "create"])->name('tweets.add');
+Route::post('add-tweet', [TweetController::class, "store"])->name('add');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -24,6 +30,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('avatar.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
