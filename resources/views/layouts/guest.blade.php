@@ -16,10 +16,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center p-6 sm:pt-0 bg-gray-100">
+<body class="font-sans text-gray-900 antialiased dark:bg-white">
+    <div class="min-h-screen grid grid-cols-[20%_60%_20%] bg-white">
         <nav
-            class="m-4 grid 2xl:grid-cols-4 place-items-center p-5 shadow-lg shadow-slate-700 rounded-xl dark:bg-white w-full">
+            class="max-h-screen grid grid-rows-4 place-items-center font-mono text-xl text-blue-700 sticky top-0 dark:bg-white w-full">
             <a href="/"
                 class="group font-bold text-3xl flex items-center space-x-4 transition text-center">Accueil</a>
             <a href="{{ route('users') }}"
@@ -41,8 +41,22 @@
             </form>
         </nav>
 
-        <div>
+        <div class="m-4">
             {{ $slot }}
+        </div>
+
+        <div>
+            <nav
+                class="h-screen grid grid-rows-2 place-items-center font-mono text-xl text-blue-700 sticky top-0 dark:bg-white">
+                <form method="GET" action='{{ route('accueil') }}'>
+                    <input type="text" name="search" value="{{ request()->query('search') }}">
+                    <input type="submit" value="Rechercher">
+                </form>
+                <div
+                    class="rounded-full bg-blue-700 px-12 py-6 hover:bg-blue-900 @if (!Auth::check()) hidden @endif">
+                    <a href="{{ route('tweets.add') }}" class="text-center text-white text-xl">Tweeter</a>
+                </div>
+            </nav>
         </div>
     </div>
 </body>

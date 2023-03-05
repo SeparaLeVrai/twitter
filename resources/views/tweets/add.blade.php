@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-guest-layout>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
             <div class="flex justify-between mt-8">
@@ -27,10 +27,10 @@
 
                 <div class="flex justify-end">
                     <x-primary-button type="submit">
-                        {{ __('Créer') }}
+                        {{ __('Tweeter') }}
                     </x-primary-button>
                 </div>
             </form>
         </div>
     </div>
-</x-app-layout>
+</x-guest-layout>

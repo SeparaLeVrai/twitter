@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TweetAddRequest;
+use App\Models\Answer;
+use App\Models\Like;
 use App\Models\Tweet;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +27,11 @@ class TweetController extends Controller
      */
     public function create()
     {
-        return view('tweets.add');
+        if (!Auth::check()) {
+            return redirect('/');
+        } else {
+            return view('tweets.add');
+        }
     }
 
     /**
@@ -33,10 +39,15 @@ class TweetController extends Controller
      */
     public function store(TweetAddRequest $request)
     {
+
         $tweet = Tweet::make();
         $tweet->text = $request->validated()['text'];
 
-        $path = Storage::url($request->file('img_path')->store('media', 'public'));
+        if ($request->hasFile('img_path')) {
+            $path = Storage::url($request->file('img_path')->store('media', 'public'));
+        } else {
+            $path = null;
+        }
         $tweet->img_path = $path;
 
         $tweet->user_id = Auth::id();
@@ -48,9 +59,41 @@ class TweetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tweet $tweet)
+    public function show($id)
     {
-        //
+        $tweet = Tweet::findOrFail($id);
+        $likeCount = Like::where('tweet_id', $id)->count();
+        $answerCount = Answer::where('tweet_id', $id)->count();
+        $answers = $tweet
+            ->answers()
+            ->with('user')
+            ->orderBy('created_at')
+            ->get();
+
+        return view('tweets.show', compact('tweet', 'likeCount', 'answerCount', 'answers'));
+    }
+
+    public function addAnswer(Request $request, Tweet $tweet)
+    {
+        $request->validate([
+            'body' => 'required|string|max:280',
+        ]);
+
+        $answer = $tweet->answers()->make();
+        $answer->body = $request->input('body');
+        $answer->user_id = auth()->user()->id;
+        $answer->save();
+
+        return redirect()->back();
+    }
+
+    public function deleteAnswer(Tweet $tweet, Answer $answer)
+    {
+        $this->authorize('delete', $answer);
+
+        $answer->delete();
+
+        return redirect()->back();
     }
 
     /**

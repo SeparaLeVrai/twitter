@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AccueilController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TweetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController as AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +21,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AccueilController::class, "index"])->name('accueil');
 Route::get('/users', [UserController::class, "index"])->name('users');
-Route::get('/users/{pseudo}', [UserController::class, "show"])->name('show');
+Route::get('/users/{pseudo}', [UserController::class, "show"])->name('user.show');
+Route::get('/tweets/{id}', [TweetController::class, "show"])->name('tweet.show');
 Route::get('/add', [TweetController::class, "create"])->name('tweets.add');
 Route::post('add-tweet', [TweetController::class, "store"])->name('add');
+Route::post('like', [LikeController::class, "store"])->name('like');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/tweets/{tweet}/answers', [TweetController::class, 'addAnswer'])->name('answers.add');
+    Route::delete('/tweets/{tweet}/answers/{answer}', [TweetController::class, 'deleteAnswer'])->name('answers.delete');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

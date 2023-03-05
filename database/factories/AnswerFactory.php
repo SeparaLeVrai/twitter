@@ -17,7 +17,10 @@ class AnswerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::get()->random()->id,
+            'tweet_id' => \App\Models\Tweet::get()->random()->id,
+            'body' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 400),
+            'created_at' => fake()->dateTimeBetween('-2 months', 'now'),
         ];
     }
 }

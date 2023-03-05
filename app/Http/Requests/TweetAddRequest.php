@@ -23,7 +23,7 @@ class TweetAddRequest extends FormRequest
     {
         return [
             'text' => 'required|max:280',
-            'img_path' => 'nullable|image|mimes:jpg,png,gif,jpeg',
+            'img_path' => 'nullable|image|mimes:jpg,png,gif,jpeg|max:400',
         ];
     }
 }
