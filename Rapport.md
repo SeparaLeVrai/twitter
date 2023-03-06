@@ -1,6 +1,6 @@
 Voici le schéma Mermaid de ma Database SQL pour ce projet Twitter :
 
-![Database](storage/app/public/images/mermaid.png)
+![Database](mermaid.png)
 
 Ici, nous pouvons en déduire :
 
