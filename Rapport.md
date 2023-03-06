@@ -11,7 +11,7 @@ Ici, nous pouvons en déduire :
 *   Likes **belongsTo** Users, Tweets
 *   Answers **belongsTo** Users, Tweets
 
--   3 Factories & Seeders associats (exclusion du Like)
+-   4 Factories & Seeders associatifs
 
 *   **UserSeeder** se charge d'implémenter un utilisateur permanent du pseudo de _Separa_, compte qui possède toutes les valeurs d'User possibles.
 
